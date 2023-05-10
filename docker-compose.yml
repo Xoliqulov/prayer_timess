@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  bot:
+    build: .
+    restart: always
+    working_dir: /apps
+    container_name: story_bot
+    environment:
+      TOKEN: 6012582431:AAHsLbcmbgvosnyGjCF3sCPzqZ97FfKbRQw
+      DB_HOST: pg
+      DB_PORT: 5432
+      DB_PASS: 11
+    command: python main.py
+    depends_on:
+      - pg
+  pg:
+    image: postgres:14.1-alpine
+    restart: always
+    container_name: my_postgres
+    environment:
+      - POSTGRES_PASSWORD=11
+    volumes:
+      - pg_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+volumes:
+  pg_data:
