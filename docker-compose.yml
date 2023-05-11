@@ -5,7 +5,7 @@ services:
     build: .
     restart: always
     working_dir: /apps
-    container_name: story_bot
+    container_name: prayer_bot
     environment:
       TOKEN:
       DB_HOST: pg

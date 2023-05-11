@@ -23,13 +23,11 @@ def create_table():
     )'''
 
     story_query = '''
-    CREATE TABLE IF NOT EXISTS stores(
+    CREATE TABLE IF NOT EXISTS message(
         id serial primary key,
-        author_id varchar(100) references users(user_id)  on DELETE CASCADE ,
-        author_name varchar(100) not null,
-        story_title varchar(255) not null,
-        story text not null,
-        public boolean not null,
+        user_id varchar(100) not null,
+        username varchar(255),
+        msg text ,
         time timestamp default now()
     )'''
     cur = con.cursor()
@@ -39,22 +37,29 @@ def create_table():
     cur.close()
 
 
-def get_user(user_id: str):
-    query = 'select * from users where user_id = %s'
-    cur.execute(query, (user_id,))
-    user = cur.fetchone()
-    return user
+def messages():
+    cur.execute("SELECT username, msg FROM message")  # noqa
+    rows = cur.fetchall()
+    return rows
 
 
-def get_all_stories():
-    query = 'select * from stores where public = %s'
-    cur.execute(query, (True,))
-    stores = cur.fetchall()
-    return stores
+def write_users(id_, name, user):
+    query = '''
+    INSERT INTO users(user_id, name, username) VALUES (%s, %s, %s);
+    '''
+    cur.execute(query, (id_, name, user))
+    con.commit()
 
 
-def get_my_stories(user_id: str):
-    query = 'select * from stores where author_id = %s'
-    cur.execute(query, (user_id,))
-    stores = cur.fetchall()
-    return stores
+def check_id():
+    cur.execute("SELECT user_id FROM users")  # noqa
+    rows = cur.fetchall()
+    return rows
+
+
+def write_msg(id_, user, msg):
+    query = '''
+    INSERT INTO message(firs_id, username, msg) VALUES (%s, %s, %s);
+    '''
+    cur.execute(query, (id_, user, msg))
+    con.commit()
