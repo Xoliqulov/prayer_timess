@@ -59,7 +59,7 @@ def check_id():
 
 def write_msg(id_, user, msg):
     query = '''
-    INSERT INTO message(firs_id, username, msg) VALUES (%s, %s, %s);
+    INSERT INTO message(user_id, username, msg) VALUES (%s, %s, %s);
     '''
     cur.execute(query, (id_, user, msg))
     con.commit()
